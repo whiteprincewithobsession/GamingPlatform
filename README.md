@@ -138,7 +138,7 @@
   - `Games` -> `UserGames`, `Achievements`, `GameProgress`, `Leaderboards`, `Transactions`, `Streams`, `Reviews`, `GameTags`
 
 - Многие-ко-многим (Many-to-Many):
-  - `Users` -> `Roles` (через связующую таблицу `UserRoles`)
+  - `Users` -> `Roles` (через таблицу `UserRoles`)
 
 - Один-к-одному (One-to-One):
   - `Users` -> `UserProfile`
@@ -169,4 +169,4 @@
 
 Сущность Reviews позволяет пользователям оставлять отзывы и оценки для игр.
 
-Наконец, сущность GameTags используется для хранения тегов, связанных с играми, что может помочь в организации и поиске игр.
+Сущность GameTags используется для хранения тегов, связанных с играми, что может помочь в организации и поиске игр.
