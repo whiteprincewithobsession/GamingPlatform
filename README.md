@@ -11,7 +11,9 @@
 - Облачное сохранение игрового прогресса
 - Система рейтинга игроков
 - Управление внутриигровыми покупками
-- Стриминг игрового процесса
+
+## Диаграма таблиц базы данных
+![alt text](https://github.com/whiteprincewithobsession/GamingPlatform/blob/main/diagram/diagram.png)
 
 ## Сущности базы данных
 
@@ -95,15 +97,7 @@
     - `SaveData` (TEXT, не null)
     - `LastUpdated` (DATETIME, не null)
 
-13. **Leaderboards** (Таблицы лидеров)
-    - `LeaderboardID` (INT, PK)
-    - `GameID` (INT, FK -> Games.GameID, не null)
-    - `UserID` (INT, FK -> Users.UserID, не null)
-    - `Score` (INT, не null)
-    - `Rank` (INT, не null)
-    - `LastUpdated` (DATETIME, не null)
-
-14. **Transactions** (Транзакции)
+13. **Transactions** (Транзакции)
     - `TransactionID` (INT, PK)
     - `UserID` (INT, FK -> Users.UserID, не null)
     - `GameID` (INT, FK -> Games.GameID, nullable)
@@ -111,14 +105,7 @@
     - `Type` (VARCHAR, не null)
     - `Date` (DATETIME, не null)
 
-15. **Streams** (Трансляции)
-    - `StreamID` (INT, PK)
-    - `UserID` (INT, FK -> Users.UserID, не null)
-    - `GameID` (INT, FK -> Games.GameID, не null)
-    - `Title` (VARCHAR, не null)
-    - `StartTime` (DATETIME, не null)
-
-16. **Reviews** (Отзывы)
+14. **Reviews** (Отзывы)
     - `ReviewID` (INT, PK)
     - `UserID` (INT, FK -> Users.UserID, не null)
     - `GameID` (INT, FK -> Games.GameID, не null)
@@ -126,7 +113,7 @@
     - `Content` (TEXT, не null)
     - `PostDate` (DATETIME, не null)
 
-17. **GameTags** (Теги игр)
+15. **GameTags** (Теги игр)
     - `TagID` (INT, PK)
     - `GameID` (INT, FK -> Games.GameID, не null)
     - `Tag` (VARCHAR, не null)
@@ -134,8 +121,8 @@
 ## Связи
 
 - Один-ко-многим (One-to-Many):
-  - `Users` -> `UserGames`, `UserAchievements`, `Friends`, `ChatMessages`, `GameProgress`, `Leaderboards`, `Transactions`, `Streams`, `Reviews`, `UserActivityLog`
-  - `Games` -> `UserGames`, `Achievements`, `GameProgress`, `Leaderboards`, `Transactions`, `Streams`, `Reviews`, `GameTags`
+  - `Users` -> `UserGames`, `UserAchievements`, `Friends`, `ChatMessages`, `GameProgress`, `Transactions`, `Reviews`, `UserActivityLog`
+  - `Games` -> `UserGames`, `Achievements`, `GameProgress`, `Transactions`, `Reviews`, `GameTags`
 
 - Многие-ко-многим (Many-to-Many):
   - `Users` -> `Roles` (через таблицу `UserRoles`)
@@ -143,7 +130,7 @@
 - Один-к-одному (One-to-One):
   - `Users` -> `UserProfile`
 
-Основные функции системы включают управление учетными записями пользователей, каталог игр с возможностью покупки, систему достижений и наград, социальные функции (друзья, чаты), облачное сохранение игрового прогресса, систему рейтинга игроков, управление внутриигровыми покупками и стриминг игрового процесса.
+Основные функции системы включают управление учетными записями пользователей, каталог игр с возможностью покупки, систему достижений и наград, социальные функции (друзья, чаты), облачное сохранение игрового прогресса, управление внутриигровыми покупками. Также аутентификация пользователей путем сравнения почты и захешированного пароля, регистрация пользователей.
 
 Сущность Users содержит основную информацию о пользователях, такую как имя пользователя, электронную почту, пароль и дату регистрации. Сущность UserProfile связана с Users связью один-к-одному и содержит дополнительную информацию о пользователе, такую как полное имя, биография, аватар, местоположение и дата рождения.
 
@@ -161,11 +148,7 @@
 
 Сущность GameProgress используется для облачного сохранения игрового прогресса пользователей в различных играх.
 
-Сущность Leaderboards представляет таблицы лидеров, где отслеживаются рейтинги и очки пользователей в разных играх.
-
 Сущность Transactions хранит информацию о транзакциях, таких как покупки игр, внутриигровые покупки и возвраты.
-
-Сущность Streams содержит данные о трансляциях игрового процесса, проводимых пользователями.
 
 Сущность Reviews позволяет пользователям оставлять отзывы и оценки для игр.
 
