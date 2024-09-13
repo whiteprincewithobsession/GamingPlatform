@@ -4,12 +4,15 @@
 
 ## Функциональные требования
 
-- Управление учетными записями пользователей
-- Каталог игр с возможностью покупки и загрузки
-- Система достижений и наград
-- Социальные функции (друзья, чаты)
-- Облачное сохранение игрового прогресса
-- Управление внутриигровыми покупками
+- Управление учетными записями пользователей. Модератор может редактировать профили обычных пользователей, если там содержится неприемлемая информация,
+  реклама чего-либо. Также сами пользователи могут редактировать свои профили, оставлять более подробную информацию, изменять аватарку и т.д.
+- Каталог игр с возможностью покупки и загрузки. На платформе представлены различные игры с разными тегами, пользователи могут приобретать игры,
+  также их возвращать, если было наиграно недостаточное количество часов. Загрузка подразумевает под собой, что есть пользователи с ролью
+  "Издатель", то есть они могут загрузить на игровую платформу свою игру, установить цену, теги, и описать её
+- Социальные функции (друзья, чаты). Пользователи могут отправлять письма другим игрокам, а также добавлять друг друга в друзья, для переписок.
+  (без дружбы, пользователи не могут отправлять сообщения друг другу)
+- Облачное сохранение игрового прогресса. В одной из сущностей хранится прогресс игрока в определенной игре, его достижения, сколько часов наиграно
+  когда последний раз сохранялся, и заходил в игру.
 
 ## Диаграма таблиц базы данных
 ![alt text](https://github.com/whiteprincewithobsession/GamingPlatform/blob/main/diagram/diagram.png)
@@ -24,7 +27,7 @@
    - `RegistrationDate` (DATE, не null)
 
 2. **UserProfile** (Профиль пользователя)
-   - `UserID` (INT, PK, FK -> Users.UserID)
+   - `UserID` (INT, PK, FK -> Users.UserID, уникальное)
    - `FullName` (VARCHAR)
    - `Bio` (TEXT)
    - `Avatar` (VARCHAR)
@@ -36,75 +39,71 @@
    - `RoleName` (VARCHAR, уникальное, не null)
    - `Description` (TEXT)
 
-4. **UserRoles** (Связь пользователей и ролей)
-   - `UserRoleID` (INT, PK)
-   - `UserID` (INT, FK -> Users.UserID, не null)
-   - `RoleID` (INT, FK -> Roles.RoleID, не null)
-
-5. **UserActivityLog** (Журнал активности пользователя)
+4. **UserActivityLog** (Журнал активности пользователя)
    - `LogID` (INT, PK)
    - `UserID` (INT, FK -> Users.UserID, не null)
    - `Activity` (VARCHAR, не null)
    - `Timestamp` (DATETIME, не null)
    - `AdditionalData` (TEXT)
 
-6. **Games** (Игры)
+5. **Games** (Игры)
    - `GameID` (INT, PK)
-   - `Title` (VARCHAR, не null)
+   - `Title` (VARCHAR, уникальное, не null)
    - `Description` (TEXT)
    - `ReleaseDate` (DATE)
    - `Developer` (VARCHAR, не null)
    - `Price` (DECIMAL, не null)
 
-7. **UserGames** (Игры пользователей)
+6. **UserGames** (Игры пользователей)
    - `UserGameID` (INT, PK)
    - `UserID` (INT, FK -> Users.UserID, не null)
    - `GameID` (INT, FK -> Games.GameID, не null)
    - `PurchaseDate` (DATE, не null)
    - `PlayTime` (INT, не null, default: 0)
 
-8. **Achievements** (Достижения)
+7. **Achievements** (Достижения)
    - `AchievementID` (INT, PK)
    - `GameID` (INT, FK -> Games.GameID, не null)
    - `Title` (VARCHAR, не null)
    - `Description` (TEXT)
    - `Points` (INT, не null, default: 0)
 
-9. **UserAchievements** (Достижения пользователей)
+8. **UserAchievements** (Достижения пользователей)
    - `UserAchievementID` (INT, PK)
    - `UserID` (INT, FK -> Users.UserID, не null)
    - `AchievementID` (INT, FK -> Achievements.AchievementID, не null)
    - `UnlockDate` (DATETIME, не null)
 
-10. **Friends** (Друзья)
+9. **Friends** (Друзья)
     - `FriendshipID` (INT, PK)
     - `UserID1` (INT, FK -> Users.UserID, не null)
     - `UserID2` (INT, FK -> Users.UserID, не null)
     - `FriendshipDate` (DATE, не null)
 
-11. **ChatMessages** (Сообщения чата)
+10. **ChatMessages** (Сообщения чата)
     - `MessageID` (INT, PK)
     - `SenderID` (INT, FK -> Users.UserID, не null)
     - `ReceiverID` (INT, FK -> Users.UserID, не null)
     - `Content` (TEXT, не null)
     - `SendDate` (DATETIME, не null)
 
-12. **GameProgress** (Игровой прогресс)
+11. **GameProgress** (Игровой прогресс)
     - `ProgressID` (INT, PK)
     - `UserID` (INT, FK -> Users.UserID, не null)
     - `GameID` (INT, FK -> Games.GameID, не null)
     - `SaveData` (TEXT, не null)
     - `LastUpdated` (DATETIME, не null)
 
-13. **Transactions** (Транзакции)
+12. **Transactions** (Транзакции)
     - `TransactionID` (INT, PK)
+    - `TransactionCode` (VARCHAR, уникальное, не null)
     - `UserID` (INT, FK -> Users.UserID, не null)
     - `GameID` (INT, FK -> Games.GameID, nullable)
     - `Amount` (DECIMAL, не null)
     - `Type` (VARCHAR, не null)
     - `Date` (DATETIME, не null)
 
-14. **Reviews** (Отзывы)
+13. **Reviews** (Отзывы)
     - `ReviewID` (INT, PK)
     - `UserID` (INT, FK -> Users.UserID, не null)
     - `GameID` (INT, FK -> Games.GameID, не null)
@@ -112,7 +111,7 @@
     - `Content` (TEXT, не null)
     - `PostDate` (DATETIME, не null)
 
-15. **GameTags** (Теги игр)
+14. **GameTags** (Теги игр)
     - `TagID` (INT, PK)
     - `GameID` (INT, FK -> Games.GameID, не null)
     - `Tag` (VARCHAR, не null)
@@ -124,7 +123,7 @@
   - `Games` -> `UserGames`, `Achievements`, `GameProgress`, `Transactions`, `Reviews`, `GameTags`
 
 - Многие-ко-многим (Many-to-Many):
-  - `Users` -> `Roles` (через таблицу `UserRoles`)
+  - `Game` -> `Tags` (через таблицу `GameTags`)
 
 - Один-к-одному (One-to-One):
   - `Users` -> `UserProfile`
