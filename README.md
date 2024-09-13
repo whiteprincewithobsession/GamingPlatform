@@ -120,7 +120,7 @@
 
 - Один-ко-многим (One-to-Many):
   - `Users` -> `UserGames`, `UserAchievements`, `Friends`, `ChatMessages`, `GameProgress`, `Transactions`, `Reviews`, `UserActivityLog`
-  - `Games` -> `UserGames`, `Achievements`, `GameProgress`, `Transactions`, `Reviews`, `GameTags`
+  - `Games` -> `UserGames`, `Achievements`, `GameProgress`, `Transactions`, `Reviews`
 
 - Многие-ко-многим (Many-to-Many):
   - `Game` -> `Tags` (через таблицу `GameTags`)
