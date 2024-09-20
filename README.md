@@ -25,9 +25,11 @@
    - `Email` (VARCHAR, уникальное, не null)
    - `Password` (VARCHAR, не null)
    - `RegistrationDate` (DATE, не null)
+   - `CashBalance` NUMBERIC(10,2) DEFAULT 0
 
 2. **UserProfile** (Профиль пользователя)
    - `UserID` (INT, PK, FK -> Users.UserID, уникальное)
+   - `RoleID` (INT, FK -> Roles.RoleID)
    - `FullName` (VARCHAR)
    - `Bio` (TEXT)
    - `Avatar` (VARCHAR)
@@ -44,14 +46,12 @@
    - `UserID` (INT, FK -> Users.UserID, не null)
    - `Activity` (VARCHAR, не null)
    - `Timestamp` (DATETIME, не null)
-   - `AdditionalData` (TEXT)
 
 5. **Games** (Игры)
    - `GameID` (INT, PK)
    - `Title` (VARCHAR, уникальное, не null)
    - `Description` (TEXT)
    - `ReleaseDate` (DATE)
-   - `Developer` (VARCHAR, не null)
    - `Price` (DECIMAL, не null)
 
 6. **UserGames** (Игры пользователей)
@@ -103,19 +103,23 @@
     - `Type` (VARCHAR, не null)
     - `Date` (DATETIME, не null)
 
-13. **Reviews** (Отзывы)
+13. **TransactionType** (Тип транзакции)
+    - `TypeID` (INT, не null)
+    - `TypeName` (VARCHAR(32), не null)
+
+14. **Reviews** (Отзывы)
     - `ReviewID` (INT, PK)
     - `UserID` (INT, FK -> Users.UserID, не null)
     - `GameID` (INT, FK -> Games.GameID, не null)
-    - `Rating` (INT, не null, примечание: 'Значение должно быть от 1 до 5')
+    - `Rating` (INT, не null, примечание: 'Значение должно быть от 1 до 10')
     - `Content` (TEXT, не null)
     - `PostDate` (DATETIME, не null)
 
-14. **GameTags** (Теги игр)
+15. **GameTags** (Теги игр)
     - `TagID` (INT, FK -> Tags.ID, не null)
     - `GameID` (INT, FK -> Games.GameID, не null)
 
-15. **Tags** (Теги)
+16. **Tags** (Теги)
     - `ID` (INT, PK)
     - `Name` (VARCHAR 31, уникальное, не null)
     - `Description` (VARCHAR 63, не null)
